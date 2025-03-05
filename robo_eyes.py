@@ -7,8 +7,8 @@ from PIL import Image, ImageSequence, ImageDraw
 from adafruit_ht16k33.matrix import Matrix8x8
 
 
-blinkCountdown = 100 # Countdown to next blink (in frames)
-gazeCountdown  =  75 # Countdown to next eye movement
+blinkCountdown = randint(5, 180) # Countdown to next blink (in frames)
+gazeCountdown  =  randint(gazeFrames, 120) # Countdown to next eye movement
 gazeFrames     =  50 # Duration of eye movement (smaller = faster)
 
 eyeX = 3
@@ -30,16 +30,16 @@ matrix2.brightness(0)
 
 while True: #main loop
     #open the bitmap GIF and create an iterator
-    blinkSeq = Image.open('/home/thommorley/pi_eyes/blink.gif')
-    blinkImg = ImageSequence.Iterator(blinkSeq)
+    blinkImg = Image.open('path/to/image')
+    blinkSeq = ImageSequence.Iterator(blinkImg)
     
     blinkCountdown -= 1
     gazeCountdown -= 1
         
     if blinkCountdown < 9:
-        img = blinkImg[blinkCountdown]
+        img = blinkSeq[blinkCountdown]
     else:
-        img = blinkImg[0]
+        img = blinkSeq[0]
        
     draw = ImageDraw.Draw(img)
     
@@ -80,7 +80,7 @@ while True: #main loop
     matrix2.image(img.rotate(90))
     
     
-    blinkSeq.close()
+    blinkImg.close()
     
     if blinkCountdown == 0:
         blinkCountdown = randint(5, 180)
